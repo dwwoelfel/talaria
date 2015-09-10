@@ -154,16 +154,9 @@
                        (- ka-ms
                           (- (.getTime (js/Date.))
                              (.getTime last-send))))]
-    (println "a - b" (when last-send
-                       (- (.getTime (js/Date.)) ka-ms
-                          (.getTime last-send))))
-    (println "ns-ms" next-send-ms "last-send" last-send)
     (if (and next-send-ms (pos? next-send-ms))
+      (js/setTimeout #(ping-loop tal-state) next-send-ms)
       (do
-        (println "scheduling for ns-ms")
-        (js/setTimeout #(ping-loop tal-state) next-send-ms))
-      (do
-        (println "sending now, then scheduling for ka-ms")
         (queue-msg! tal-state {:op :tal/ping})
         (js/setTimeout #(ping-loop tal-state) ka-ms)))))
 

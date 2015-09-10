@@ -1,4 +1,4 @@
-(defproject talaria "0.1.0"
+(defproject talaria "0.1.1-SNAPSHOT"
   :description "Clojure library for real-time client/server communication"
   :url "https://github.com/PrecursorApp/talaria"
   :license {:name "Eclipse Public License"
@@ -13,7 +13,7 @@
                  [org.clojure/tools.logging "0.3.1"]
 
                  ;; TODO: remove dependency on these
-                 [precursor/core.async "0.1.361.0-d8047c-alpha"]
+                 [org.clojure/core.async "0.1.346.0-17112a-alpha"]
                  [cljs-http "0.1.35"]]
 
   :profiles {:dev {:source-paths ["src" "dev"]
@@ -27,8 +27,6 @@
                                                                           org.clojure/tools.nrepl]]
                                   [compojure "1.3.4"]
                                   [hiccup "1.0.5"]
-
-                                  ;; TODO: have to get rid of core.async and cljs-http dependencies
                                   [org.omcljs/om "0.8.8"]]
                    :main talaria.dev}}
   :figwheel {:server-port 3434}
