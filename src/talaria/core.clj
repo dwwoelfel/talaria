@@ -130,7 +130,7 @@
                                      (< (/ (:ping-ms @tal-state) 2)
                                         (- (.getTime (java.util.Date.))
                                            (.getTime (:last-send-time ch-info))))))
-                        (queue-msg! tal-state ch-id {:op :tal/ping})))))
+                        (queue-msg! tal-state ch-id {:msg {:op :tal/ping}})))))
 
 (defn cancel-ping-job [tal-state ch-id]
   (some-> (get-channel-info tal-state ch-id) :ping-job (.cancel false)))
