@@ -26,6 +26,16 @@ Talaria currently requires [Immutant as the web server](http://immutant.org/docu
 
 Expects ring session middleware to be present.
 
+## TODO
+
+- Write a proper README
+- Figure out how to handle Ajax long-polling in a multi-server deploy (without sticky sessions)
+- Import some helpers from Precursor
+  - `sliding-send` for dropping duplicates
+  - Parallelized message handlers that handle a single channel's message in serial
+- Remove core.async dependency on frontend
+
+
 ## License
 
 Copyright © 2015 FIXME
