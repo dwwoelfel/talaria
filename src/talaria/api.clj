@@ -8,7 +8,8 @@
    send and receive messages.
    The user of the library is expected to set up a handler for the recv-queue,
    otherwise the queue will grow without bound."
-  [& {:keys [ws-delay ajax-delay ping-ms ch-id-fn]
+  [& {:keys [ws-delay ajax-delay ping-ms ch-id-fn
+             transit-writer-opts transit-reader-opts]
       :or {ws-delay 30
            ajax-delay 150
            ping-ms (* 1000 60 5)
@@ -25,7 +26,9 @@
                         :ws-delay ws-delay
                         :ajax-delay ajax-delay
                         :ping-ms ping-ms
-                        :stats {}})]
+                        :stats {}
+                        :transit-reader-opts transit-reader-opts
+                        :transit-writer-opts transit-writer-opts})]
     tal-state))
 
 (defn shutdown [tal-state]

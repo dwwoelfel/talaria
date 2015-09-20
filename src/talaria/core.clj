@@ -17,16 +17,15 @@
     (io/input-stream (.getBytes msg "UTF-8"))
     msg))
 
-(defn decode-msg [msg]
+(defn decode-msg [tal-state msg]
   (-> msg
       (streamify)
-      ;; TODO: support for custom readers, should be passed into init
-      (transit/reader :json)
+      (transit/reader :json (:transit-reader-opts @tal-state))
       (transit/read)))
 
-(defn encode-msg [msg]
+(defn encode-msg [tal-state msg]
   (let [out (ByteArrayOutputStream. 4096)
-        w (transit/writer out :json)]
+        w (transit/writer out :json (:transit-writer-opts @tal-state))]
     (transit/write w msg)
     ;; TODO: look into streams and binary streams
     (.toString out)))
@@ -63,7 +62,7 @@
   (assert (vector? msg))
   (if-let [ch (:channel (get-channel-info tal-state ch-id))]
     (let [res (immutant/send! ch
-                              (encode-msg msg)
+                              (encode-msg tal-state msg)
                               {:close? (or close? (utils/ajax-channel? ch))
                                :on-success (fn []
                                              (state/record-send-success tal-state ch-id msg)
@@ -175,7 +174,7 @@
   (fn [ch msg]
     (let [id (ch-id ch)
           msg-ch (:msg-ch @tal-state)
-          messages (decode-msg msg)]
+          messages (decode-msg tal-state msg)]
       (state/record-msg tal-state id msg)
       (doseq [msg messages]
         (handle-message tal-state (assoc msg
@@ -186,7 +185,7 @@
 (defn handle-ajax-msg [tal-state ch-id msg ring-req]
   (if-let [channel-info (get-channel-info tal-state ch-id)]
     (let [msg-ch (:msg-ch @tal-state)
-          messages (decode-msg msg)]
+          messages (decode-msg tal-state msg)]
       (state/record-msg tal-state ch-id msg)
       (doseq [msg messages]
         (handle-message tal-state (assoc msg
