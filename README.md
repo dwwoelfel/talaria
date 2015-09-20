@@ -34,6 +34,7 @@ Expects ring session middleware to be present.
   - `sliding-send` for dropping duplicates
   - Parallelized message handlers that handle a single channel's message in serial
 - Remove core.async dependency on frontend
+- Reconnect long-polling on ajax failure
 
 
 ## License
