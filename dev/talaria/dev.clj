@@ -9,7 +9,9 @@
             [talaria.api :as tal]
             [talaria.routes :as tal-routes]
             [talaria.view :as view]
-            [http.async.client :as client]))
+            [http.async.client :as client]
+            [ring.middleware.session :as session]
+            [ring.middleware.session.cookie :as cookie]))
 
 (defn route-handler [tal-state]
   (let [ws-setup (tal-routes/websocket-setup tal-state)
@@ -39,7 +41,8 @@
 (defn handler [tal-state]
   (-> (route-handler tal-state)
       (debug-middleware)
-      (tal-routes/wrap-session-id)))
+      (tal-routes/wrap-session-id)
+      (session/wrap-session {:store (cookie/cookie-store)})))
 
 (defn nrepl-port []
   (if (System/getenv "NREPL_PORT")
