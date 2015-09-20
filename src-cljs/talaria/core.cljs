@@ -178,8 +178,8 @@
                                clj->js
                                (goog.Uri.QueryData/createFromMap)))))))
 
-(defn setup-ajax [tal-state [{:keys [on-open on-close on-error on-reconnect reconnecting? url-parts]
-                              :as opts}]]
+(defn setup-ajax [tal-state {:keys [on-open on-close on-error on-reconnect reconnecting? url-parts]
+                             :as opts}]
   (let [url (make-url (assoc url-parts :path "/talaria" :ws? false))
         w (map->AjaxSocket {:recv-url (make-url (assoc url-parts :path "/talaria/ajax-poll"))
                             :send-url (make-url (assoc url-parts :path "/talaria/ajax-send"))

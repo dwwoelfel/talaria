@@ -139,7 +139,7 @@
             "tal-state:"
             (dom/pre nil
                      (with-out-str
-                       (cljs.pprint/pprint (dissoc @(:tal-state app) :callbacks))))))
+                       (cljs.pprint/pprint (dissoc @(:tal-state app) :callbacks :ws))))))
         (dom/div #js {:style #js {:flexGrow "0"}}
           (om/build send-tal-message (:tal-state app))
           (om/build send-echo-message (:tal-state app)))))))
