@@ -55,7 +55,11 @@
 (defn ajax-poll [tal-state]
   (fn [req]
     (let [channel-id (compute-channel-id tal-state req)]
-      (if (get-in req [:params "open?"])
+      (if (some->> req
+                   :query-string
+                   (re-find #"open%3F=([^&]+)($|&)")
+                   second
+                   (= "true"))
         (do (tal/handle-ajax-open tal-state channel-id req)
             {:status 200 :body "connected"})
         (immutant/as-channel (assoc req :tal/ch-id channel-id)
