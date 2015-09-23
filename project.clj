@@ -15,6 +15,7 @@
                  ;; TODO: remove dependency on these
                  [org.clojure/core.async "0.1.346.0-17112a-alpha"]
                  [cljs-http "0.1.35"]]
+  :source-paths ["src" "src-cljs"]
 
   :profiles {:dev {:source-paths ["src" "dev"]
                    :plugins [[lein-cljsbuild "1.0.6"]
@@ -50,5 +51,4 @@
                                    :output-dir "resources/public/cljs/production"
                                    :optimizations :advanced
                                    :source-map "resources/public/cljs/production/rr.map"}}]}
-  ;; TODO: How can we put this in dev?
   )
