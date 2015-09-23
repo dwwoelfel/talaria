@@ -4,10 +4,16 @@
             [talaria.core :as core]
             [talaria.queue :as queue]))
 
+(defn start-message-consumer [tal-state handler]
+  (let [recv-queue (:recv-queue @tal-state)]
+    (queue/add-consumer recv-queue ::message-consumer #(core/consume-recv-queue tal-state handler))))
+
 (defn init [& [{:keys [secure? host port tab-id csrf-token params ;; url parts
                        ws-delay long-poll-delay keep-alive-ms
                        transit-reader transit-writer
                        on-open on-close on-error on-reconnect
+                       ;; optional handler, if not provided then client needs to call start-message-consumer elsewhere
+                       message-handler
                        test-long-polling?]
                 :or {keep-alive-ms (* 1000 60 5)
                      ;; short send delay to let things build up in the queue
@@ -44,6 +50,8 @@
              (not test-long-polling?))
       (core/setup-ws tal-state (assoc common-setup-options :delay ws-delay))
       (core/setup-ajax tal-state (assoc common-setup-options :delay long-poll-delay)))
+    (when (fn? message-consumer)
+      (start-message-consumer tal-state message-handler))
 
     tal-state))
 
@@ -52,7 +60,3 @@
   (core/shutdown-send-queue tal-state))
 
 (def queue-msg! core/queue-msg!)
-
-(defn start-message-consumer [tal-state handler]
-  (let [recv-queue (:recv-queue @tal-state)]
-    (queue/add-consumer recv-queue ::message-consumer #(core/consume-recv-queue tal-state handler))))
