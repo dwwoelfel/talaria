@@ -1,4 +1,4 @@
-(defproject talaria "0.1.1-SNAPSHOT"
+(defproject talaria "0.1.2"
   :description "Clojure library for real-time client/server communication"
   :url "https://github.com/PrecursorApp/talaria"
   :license {:name "Eclipse Public License"
