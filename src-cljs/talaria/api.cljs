@@ -50,7 +50,7 @@
              (not test-long-polling?))
       (core/setup-ws tal-state (assoc common-setup-options :delay ws-delay))
       (core/setup-ajax tal-state (assoc common-setup-options :delay long-poll-delay)))
-    (when (fn? message-consumer)
+    (when (fn? message-handler)
       (start-message-consumer tal-state message-handler))
 
     tal-state))
